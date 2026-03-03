@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: fitzone-frontend
+    env: static
+    buildCommand: cd E-com && npm install && npm run build
+    staticPublishPath: ./E-com/dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
