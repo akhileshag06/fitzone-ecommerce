@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { API_URL } from './config';
 
 const MyProduct = () => {
   const [user, setUser] = useState({
@@ -17,7 +18,7 @@ const MyProduct = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/add-user",
+        `${API_URL}/add-user`,
         user
       );
       alert(res.data.message);

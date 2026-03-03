@@ -80,7 +80,7 @@ function Dashboard() {
   });
 
   // API URL
-  const API_URL = 'http://localhost:5000/api';
+  import { API_URL } from './config';
 
   // Refs for animations
   const productRefs = useRef([]);

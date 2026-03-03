@@ -28,7 +28,7 @@ function Login() {
   const gyroData = useRef({ beta: 0, gamma: 0, alpha: 0 });
 
   // API base URL
-  const API_URL = 'http://localhost:5000/api';
+  import { API_URL } from './config';
 
   // Supplement items data (reduced for better performance)
   const supplementItems = [

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
+import { API_URL } from '../config';
 
 export default function LiveChatPanel({ token, userRole, userName, userId }) {
   const [sessions, setSessions] = useState([]);

@@ -4,7 +4,7 @@ import axios from 'axios';
 import ImagePicker from './components/ImagePicker';
 import LiveChatPanel from './components/LiveChatPanel';
 
-const API_URL = 'http://localhost:5000/api';
+import { API_URL } from './config';
 
 // ============ ADMIN LOGIN PAGE ============
 function AdminLogin({ onLogin }) {

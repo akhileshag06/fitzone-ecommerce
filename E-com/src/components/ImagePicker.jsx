@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
+import { API_URL } from '../config';
 
 export default function ImagePicker({ onSelect, currentImage, token }) {
   const [showPicker, setShowPicker] = useState(false);
