@@ -84,12 +84,21 @@ How can I assist you today?`);
       if (res.data.success) {
         // Clear existing messages and load chat history
         setMessages([]);
+        console.log('Loading messages, user ID:', user?._id);
         res.data.messages.forEach(msg => {
           // Check if message is from current user by comparing sender ID with user ID
           // Convert both to strings for proper comparison
           const senderId = typeof msg.sender === 'object' ? msg.sender._id?.toString() : msg.sender?.toString();
           const currentUserId = user?._id?.toString();
           const isCurrentUser = senderId === currentUserId;
+          
+          console.log('Message:', {
+            text: msg.message.substring(0, 30),
+            senderId,
+            currentUserId,
+            isCurrentUser,
+            senderName: msg.senderName
+          });
           
           setMessages(prev => [...prev, {
             type: isCurrentUser ? 'user' : 'bot',
