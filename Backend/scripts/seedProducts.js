@@ -1,13 +1,17 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const path = require('path');
 const connectDB = require('../config/db');
 const Product = require('../models/Product');
 
-dotenv.config();
+// Load .env from Backend folder
+dotenv.config({ path: path.join(__dirname, '../.env') });
 
 // ✅ Images are served from your backend's public/images folder
 // Make sure you copy the images folder into: backend/public/images/
-const BASE_URL = 'http://localhost:5000';
+const BASE_URL = process.env.NODE_ENV === 'production' 
+  ? 'https://fitzone-backend-x2r9.onrender.com' 
+  : 'http://localhost:5000';
 
 const products = [
   {
