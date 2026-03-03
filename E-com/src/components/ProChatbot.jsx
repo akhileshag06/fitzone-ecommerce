@@ -14,14 +14,33 @@ export default function ProChatbot({ user }) {
   const [pollingInterval, setPollingInterval] = useState(null);
   const [lastMessageId, setLastMessageId] = useState(null); // Track last message ID
   const messagesEndRef = useRef(null);
+  const chatContainerRef = useRef(null);
+  const [isUserScrolling, setIsUserScrolling] = useState(false);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (!isUserScrolling) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
   };
+
+  // Detect user scrolling
+  useEffect(() => {
+    const container = chatContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      const isAtBottom = scrollHeight - scrollTop - clientHeight < 50;
+      setIsUserScrolling(!isAtBottom);
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, isUserScrolling]);
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
@@ -768,7 +787,7 @@ Is there anything else I can help you with?`);
           </div>
 
           {/* Messages */}
-          <div style={{
+          <div ref={chatContainerRef} style={{
             flex: 1,
             overflowY: 'auto',
             padding: '20px',

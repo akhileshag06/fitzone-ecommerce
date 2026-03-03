@@ -160,7 +160,7 @@ export default function LiveChatPanel({ token, userRole, userName, userId }) {
             sessions.map(session => (
               <div
                 key={session._id}
-                onClick={() => session.status === 'active' ? setActiveSession(session) : null}
+                onClick={() => (session.status === 'active' || session.status === 'closed') ? setActiveSession(session) : null}
                 style={{
                   padding: '15px',
                   background: activeSession?.sessionId === session.sessionId 
@@ -378,7 +378,8 @@ export default function LiveChatPanel({ token, userRole, userName, userId }) {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Type your message..."
+              placeholder={activeSession?.status === 'closed' ? 'Chat is closed' : 'Type your message...'}
+              disabled={activeSession?.status === 'closed'}
               style={{
                 flex: 1,
                 padding: '12px 16px',
@@ -387,17 +388,18 @@ export default function LiveChatPanel({ token, userRole, userName, userId }) {
                 borderRadius: '25px',
                 color: 'white',
                 fontSize: '14px',
-                outline: 'none'
+                outline: 'none',
+                opacity: activeSession?.status === 'closed' ? 0.5 : 1
               }}
             />
             <button
               onClick={sendMessage}
-              disabled={!input.trim()}
+              disabled={!input.trim() || activeSession?.status === 'closed'}
               style={{
                 width: '45px',
                 height: '45px',
                 borderRadius: '50%',
-                background: input.trim() ? 'linear-gradient(135deg, #4CAF50, #45a049)' : 'rgba(255,255,255,0.1)',
+                background: (input.trim() && activeSession?.status !== 'closed') ? 'linear-gradient(135deg, #4CAF50, #45a049)' : 'rgba(255,255,255,0.1)',
                 border: 'none',
                 color: 'white',
                 fontSize: '18px',
