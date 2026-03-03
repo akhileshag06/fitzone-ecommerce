@@ -3,10 +3,8 @@ const router = express.Router();
 const { protect, adminOnly } = require('../middleware/auth');
 const admin = require('../controllers/adminController');
 
-// Admin login (public)
+// Public routes (no authentication required)
 router.post('/login', admin.adminLogin);
-
-// Create admin account (public - one-time use)
 router.post('/create-admin', admin.createAdminAccount);
 
 // All routes below require login + admin role
