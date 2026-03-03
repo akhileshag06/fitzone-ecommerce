@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 import "./Register.css";
+import { API_URL } from './config';
 
 function Register() {
   const navigate = useNavigate();
@@ -45,9 +46,6 @@ function Register() {
     { type: 'creatine', name: 'MONOHYDRATE', icon: CreatineIcon, color: '#b473ff' },
     { type: 'preworkout', name: 'ENERGY BOOST', icon: PreWorkoutIcon, color: '#ff6b6b' },
   ];
-
-  // API base URL
-  const API_URL = 'http://localhost:8080/api';
 
   // ============ GYROSCOPE SETUP ============
   useEffect(() => {
