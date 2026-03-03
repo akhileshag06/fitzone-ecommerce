@@ -5,7 +5,7 @@ const admin = require('../controllers/adminController');
 
 // Public routes (no authentication required)
 router.post('/login', admin.adminLogin);
-router.post('/create-admin', admin.createAdminAccount);
+router.route('/create-admin').get(admin.createAdminAccount).post(admin.createAdminAccount);
 
 // All routes below require login + admin role
 router.use(protect, adminOnly);
