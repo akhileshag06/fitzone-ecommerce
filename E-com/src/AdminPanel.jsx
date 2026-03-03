@@ -491,7 +491,7 @@ function AdminDashboard() {
   const logout = () => {
     localStorage.removeItem('adminToken');
     localStorage.removeItem('adminUser');
-    window.location.reload();
+    window.location.href = '/';
   };
 
   if (loading) return (

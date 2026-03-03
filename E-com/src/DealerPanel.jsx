@@ -292,7 +292,7 @@ function DealerDashboard({ dealer }) {
   const logout = () => {
     localStorage.removeItem('dealerToken');
     localStorage.removeItem('dealerUser');
-    window.location.reload();
+    window.location.href = '/';
   };
 
   if (loading) return (
