@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 import "./Register.css";
+import { API_URL } from './config';
 
 function Login() {
   const navigate = useNavigate();
@@ -26,9 +27,6 @@ function Login() {
   
   // Gyroscope data
   const gyroData = useRef({ beta: 0, gamma: 0, alpha: 0 });
-
-  // API base URL
-  import { API_URL } from './config';
 
   // Supplement items data (reduced for better performance)
   const supplementItems = [

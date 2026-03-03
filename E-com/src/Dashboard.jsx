@@ -9,6 +9,7 @@ import OrderTracking from './components/OrderTracking';
 import ProductReviews from './components/ProductReviews';
 import ProductComparison from './components/ProductComparison';
 import ProChatbot from './components/ProChatbot';
+import { API_URL } from './config';
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -78,9 +79,6 @@ function Dashboard() {
     zipCode: '',
     phone: ''
   });
-
-  // API URL
-  import { API_URL } from './config';
 
   // Refs for animations
   const productRefs = useRef([]);
