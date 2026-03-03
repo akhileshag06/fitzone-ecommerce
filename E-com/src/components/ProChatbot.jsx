@@ -16,25 +16,40 @@ export default function ProChatbot({ user }) {
   const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
   const prevMessagesLengthRef = useRef(0);
+  const userHasScrolledRef = useRef(false);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (!userHasScrolledRef.current) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
   };
+
+  // Track manual scrolling
+  useEffect(() => {
+    const container = chatContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      const isAtBottom = scrollHeight - scrollTop - clientHeight < 10;
+      
+      // If user scrolls up, mark as manually scrolled
+      if (!isAtBottom) {
+        userHasScrolledRef.current = true;
+      } else {
+        // If user scrolls back to bottom, allow auto-scroll again
+        userHasScrolledRef.current = false;
+      }
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Only scroll when NEW messages arrive
   useEffect(() => {
     if (messages.length > prevMessagesLengthRef.current) {
-      // New message arrived, check if user is near bottom
-      const container = chatContainerRef.current;
-      if (container) {
-        const { scrollTop, scrollHeight, clientHeight } = container;
-        const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
-        
-        // Only auto-scroll if user is near bottom
-        if (isNearBottom) {
-          scrollToBottom();
-        }
-      }
+      scrollToBottom();
     }
     prevMessagesLengthRef.current = messages.length;
   }, [messages]);
