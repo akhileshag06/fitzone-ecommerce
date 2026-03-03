@@ -548,3 +548,40 @@ exports.seedProducts = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+// ============ CREATE ADMIN (ONE-TIME USE) ============
+exports.createAdminAccount = async (req, res) => {
+  try {
+    // Check if admin already exists
+    const existing = await User.findOne({ email: 'admin@fitzone.com' });
+    if (existing) {
+      return res.json({
+        success: true,
+        message: 'Admin already exists',
+        credentials: {
+          email: 'admin@fitzone.com',
+          password: 'Admin@123'
+        }
+      });
+    }
+
+    const admin = await User.create({
+      name: 'FIT ZONE Admin',
+      email: 'admin@fitzone.com',
+      password: 'Admin@123',
+      phoneNumber: '9999999999',
+      role: 'admin'
+    });
+
+    res.json({
+      success: true,
+      message: 'Admin created successfully',
+      credentials: {
+        email: 'admin@fitzone.com',
+        password: 'Admin@123'
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
