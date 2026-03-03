@@ -11,6 +11,9 @@ export default function LiveChatPanel({ token, userRole, userName, userId }) {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('pending'); // 'pending', 'active', 'closed', 'all'
   const messagesEndRef = useRef(null);
+  const chatContainerRef = useRef(null);
+  const prevMessagesLengthRef = useRef(0);
+  const userHasScrolledRef = useRef(false);
 
   const headers = { Authorization: `Bearer ${token}` };
 
@@ -28,8 +31,32 @@ export default function LiveChatPanel({ token, userRole, userName, userId }) {
     }
   }, [activeSession]);
 
+  // Track manual scrolling
   useEffect(() => {
-    scrollToBottom();
+    const container = chatContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      const isAtBottom = scrollHeight - scrollTop - clientHeight < 10;
+      
+      if (!isAtBottom) {
+        userHasScrolledRef.current = true;
+      } else {
+        userHasScrolledRef.current = false;
+      }
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Only scroll when NEW messages arrive
+  useEffect(() => {
+    if (messages.length > prevMessagesLengthRef.current && !userHasScrolledRef.current) {
+      scrollToBottom();
+    }
+    prevMessagesLengthRef.current = messages.length;
   }, [messages]);
 
   const scrollToBottom = () => {
@@ -305,7 +332,7 @@ export default function LiveChatPanel({ token, userRole, userName, userId }) {
           </div>
 
           {/* Messages */}
-          <div style={{
+          <div ref={chatContainerRef} style={{
             flex: 1,
             overflowY: 'auto',
             padding: '20px',
