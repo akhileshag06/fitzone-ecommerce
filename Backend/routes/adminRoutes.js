@@ -44,4 +44,7 @@ router.get('/dealers/pending', admin.getPendingDealers);
 router.put('/dealers/:id/approve', admin.approveDealer);
 router.delete('/dealers/:id/reject', admin.rejectDealer);
 
+// Seed Products (one-time use)
+router.post('/seed-products', admin.seedProducts);
+
 module.exports = router;
