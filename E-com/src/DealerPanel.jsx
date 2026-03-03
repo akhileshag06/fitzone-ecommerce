@@ -8,6 +8,7 @@ import { API_URL } from './config';
 
 // ============ DEALER LOGIN PAGE ============
 function DealerLogin({ onLogin }) {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -124,7 +125,7 @@ function DealerLogin({ onLogin }) {
         
         <div style={{ textAlign: 'center', marginTop: '15px' }}>
           <button
-            onClick={() => window.location.href = '/dealer/register'}
+            onClick={() => navigate('/dealer/register')}
             style={{
               background: 'none',
               border: 'none',
