@@ -8,7 +8,7 @@ exports.dealerRegister = async (req, res) => {
     const { name, email, password, phoneNumber, companyName, territory, registrationKey } = req.body;
 
     // Validate registration key
-    const DEALER_REGISTRATION_KEY = 'akhi@8310';
+    const DEALER_REGISTRATION_KEY = 'Akhilesh@8310';
     if (registrationKey !== DEALER_REGISTRATION_KEY) {
       return res.status(403).json({ 
         success: false, 
