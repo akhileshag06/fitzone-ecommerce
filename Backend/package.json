@@ -1,0 +1,25 @@
+{
+  "name": "fitzone-backend",
+  "version": "1.0.0",
+  "description": "Backend for FIT ZONE E-Commerce",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "seed": "node scripts/seedProducts.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.8.9",
+    "multer": "^1.4.5-lts.1",
+    "pdfkit": "^0.17.2",
+    "razorpay": "^2.9.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

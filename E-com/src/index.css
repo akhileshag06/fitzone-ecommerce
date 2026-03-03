@@ -1,0 +1,17 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Global Font */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Global Background Gradient */
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #5f2c82, #49a09d);
+}
