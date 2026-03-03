@@ -574,7 +574,7 @@ function Register() {
             Already pumped? <Link to="/login">Login here</Link>
           </div>
           <div className="login-link" style={{ marginTop: '10px' }}>
-            <Link to="/admin" style={{ color: '#ff6b6b' }}>🔐 Admin Login</Link> | <Link to="/dealer" style={{ color: '#4dd0ff' }}>💼 Dealer Login</Link>
+            <Link to="/admin" style={{ color: '#ff6b6b' }}>🔐 Admin Login</Link> | <Link to="/dealer" style={{ color: '#4dd0ff' }}>💼 Dealer Login</Link> | <Link to="/dealer/register" style={{ color: '#ffb74d' }}>📝 Dealer Register</Link>
           </div>
         </div>
       </form>
