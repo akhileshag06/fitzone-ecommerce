@@ -71,11 +71,19 @@ app.get('/api/setup', async (req, res) => {
       });
     }
     
-    // Seed products if none exist
+    // Check if force parameter is provided to re-seed
+    const force = req.query.force === 'true';
+    
+    // Seed products if none exist OR if force=true
     const productCount = await Product.countDocuments();
     let productsCreated = 0;
     
-    if (productCount === 0) {
+    if (productCount === 0 || force) {
+      // Clear existing products if force
+      if (force) {
+        await Product.deleteMany({});
+      }
+      
       const BASE_URL = 'https://fitzone-backend-x2r9.onrender.com';
       const products = [
         { name: 'Whey Protein', description: 'Advanced whey protein formula with 25g protein per serving.', price: 3299, originalPrice: 4199, category: 'protein', image: `${BASE_URL}/images/whey-protein.png`, rating: 4.8, reviews: 2847, badge: 'BESTSELLER', stock: 50, flavors: ['Chocolate', 'Vanilla', 'Strawberry', 'Unflavored'] },
@@ -103,7 +111,8 @@ app.get('/api/setup', async (req, res) => {
       success: true,
       message: 'Setup completed successfully!',
       admin: { email: 'admin@fitzone.com', password: 'Admin@123' },
-      productsCreated
+      productsCreated,
+      existingProducts: productCount
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
