@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ImagePicker from './components/ImagePicker';
 import LiveChatPanel from './components/LiveChatPanel';
+import DealerRegister from './DealerRegister';
 
 import { API_URL } from './config';
 
 // ============ DEALER LOGIN PAGE ============
-function DealerLogin({ onLogin }) {
+function DealerLogin({ onLogin, onShowRegister }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -125,7 +126,7 @@ function DealerLogin({ onLogin }) {
         
         <div style={{ textAlign: 'center', marginTop: '15px' }}>
           <button
-            onClick={() => navigate('/dealer/register')}
+            onClick={() => onShowRegister()}
             style={{
               background: 'none',
               border: 'none',
@@ -145,6 +146,7 @@ function DealerLogin({ onLogin }) {
 
 export default function DealerPanel() {
   const [dealer, setDealer] = useState(null);
+  const [showRegister, setShowRegister] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('dealerToken');
@@ -156,8 +158,12 @@ export default function DealerPanel() {
     }
   }, []);
 
+  if (showRegister) {
+    return <DealerRegister />;
+  }
+
   if (!dealer) {
-    return <DealerLogin onLogin={setDealer} />;
+    return <DealerLogin onLogin={setDealer} onShowRegister={() => setShowRegister(true)} />;
   }
 
   return <DealerDashboard dealer={dealer} />;
