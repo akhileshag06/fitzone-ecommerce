@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Cache - FIT ZONE</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background: #ffb74d;
+            color: #333;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #ffa726;
+        }
+        .status {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        .success {
+            color: #4caf50;
+        }
+        .error {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧹 Clear Cache & Service Worker</h1>
+        <p>If you're experiencing "Not Found" errors after login, click below to clear cache:</p>
+        
+        <button onclick="clearEverything()">Clear All Cache & Reload</button>
+        
+        <div class="status" id="status"></div>
+    </div>
+
+    <script>
+        async function clearEverything() {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = 'Clearing cache...';
+            
+            try {
+                // Unregister all service workers
+                if ('serviceWorker' in navigator) {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    for (let registration of registrations) {
+                        await registration.unregister();
+                    }
+                    statusDiv.innerHTML += '<br>✅ Service workers unregistered';
+                }
+                
+                // Clear all caches
+                if ('caches' in window) {
+                    const cacheNames = await caches.keys();
+                    await Promise.all(
+                        cacheNames.map(cacheName => caches.delete(cacheName))
+                    );
+                    statusDiv.innerHTML += '<br>✅ All caches cleared';
+                }
+                
+                // Clear localStorage
+                localStorage.clear();
+                statusDiv.innerHTML += '<br>✅ LocalStorage cleared';
+                
+                // Clear sessionStorage
+                sessionStorage.clear();
+                statusDiv.innerHTML += '<br>✅ SessionStorage cleared';
+                
+                statusDiv.innerHTML += '<br><br><span class="success">✅ All cleared! Redirecting to home...</span>';
+                
+                // Redirect to home after 2 seconds
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 2000);
+                
+            } catch (error) {
+                statusDiv.innerHTML = `<span class="error">❌ Error: ${error.message}</span>`;
+            }
+        }
+    </script>
+</body>
+</html>
