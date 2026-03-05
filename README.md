@@ -4,7 +4,7 @@ A full-stack e-commerce platform for fitness supplements and gym equipment with 
 
 ## 🌐 Live Demo
 
-**Website**: https://fitzone-frontend-v1q4.onrender.com
+**Website**: https://fitzone-ecommerce.onrender.com
 
 **API**: https://fitzone-backend-x2r9.onrender.com
 
