@@ -2457,12 +2457,10 @@ function Dashboard() {
       align-items: center;
       gap: 15px;
       transition: all 0.3s ease;
-      cursor: pointer;
       flex-shrink: 0;
     }
 
     .carousel-item:hover {
-      transform: translateY(-10px) scale(1.05);
       border-color: #ffb74d;
       box-shadow: 0 20px 40px rgba(255, 183, 77, 0.3);
       background: rgba(255, 183, 77, 0.05);
@@ -2475,6 +2473,11 @@ function Dashboard() {
       border-radius: 15px;
       background: linear-gradient(145deg, #2d3342, #1f232e);
       padding: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .carousel-item-image:hover {
+      transform: scale(1.1);
     }
 
     .carousel-item-badge {
@@ -2494,6 +2497,11 @@ function Dashboard() {
       font-weight: 600;
       text-align: center;
       min-height: 40px;
+      transition: all 0.3s ease;
+    }
+
+    .carousel-item-name:hover {
+      color: #ffb74d;
     }
 
     .carousel-item-price {
@@ -3141,37 +3149,74 @@ function Dashboard() {
           <div className="product-ad-carousel">
             <h3 className="carousel-title">🔥 <span>HOT DEALS</span> - Limited Time Offers! 🔥</h3>
             <div className="carousel-track">
-              {/* Duplicate products for seamless loop */}
-              {[...products, ...products].slice(0, 16).map((product, index) => (
-                <div 
-                  key={`carousel-${product._id}-${index}`}
-                  className="carousel-item"
-                  onClick={() => {
-                    setSelectedProduct(product);
-                    setProductDetails(true);
-                    setActiveTab('shop');
-                  }}
-                >
-                  {product.discount > 0 && (
-                    <div className="carousel-item-badge">
-                      {product.discount}% OFF
-                    </div>
-                  )}
-                  <img 
-                    src={product.image || 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=120&h=120&fit=crop'} 
-                    alt={product.name}
-                    className="carousel-item-image"
-                  />
-                  <div className="carousel-item-name">{product.name}</div>
-                  <div>
-                    <span className="carousel-item-price">{formatINR(product.price)}</span>
-                    {product.originalPrice && product.originalPrice > product.price && (
-                      <span className="carousel-item-original">{formatINR(product.originalPrice)}</span>
+              {/* Show newest products and products with discounts first */}
+              {(() => {
+                // Sort products: newest first, then by discount
+                const sortedProducts = [...products].sort((a, b) => {
+                  // Prioritize products with discounts
+                  if (a.discount > 0 && b.discount === 0) return -1;
+                  if (a.discount === 0 && b.discount > 0) return 1;
+                  // Then sort by creation date (newest first)
+                  return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+                });
+                // Duplicate for seamless loop
+                const carouselProducts = [...sortedProducts, ...sortedProducts].slice(0, 16);
+                return carouselProducts.map((product, index) => (
+                  <div 
+                    key={`carousel-${product._id}-${index}`}
+                    className="carousel-item"
+                  >
+                    {product.discount > 0 ? (
+                      <div className="carousel-item-badge">
+                        {product.discount}% OFF
+                      </div>
+                    ) : (
+                      <div className="carousel-item-badge" style={{ background: 'linear-gradient(135deg, #4dd0ff, #00b0ff)' }}>
+                        NEW
+                      </div>
                     )}
+                    <img 
+                      src={product.image || 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=120&h=120&fit=crop'} 
+                      alt={product.name}
+                      className="carousel-item-image"
+                      onClick={() => {
+                        setSelectedProduct(product);
+                        setProductDetails(true);
+                        setActiveTab('shop');
+                      }}
+                      style={{ cursor: 'pointer' }}
+                    />
+                    <div 
+                      className="carousel-item-name"
+                      onClick={() => {
+                        setSelectedProduct(product);
+                        setProductDetails(true);
+                        setActiveTab('shop');
+                      }}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {product.name}
+                    </div>
+                    <div>
+                      <span className="carousel-item-price">{formatINR(product.price)}</span>
+                      {product.originalPrice && product.originalPrice > product.price && (
+                        <span className="carousel-item-original">{formatINR(product.originalPrice)}</span>
+                      )}
+                    </div>
+                    <button 
+                      className="carousel-item-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedProduct(product);
+                        setProductDetails(true);
+                        setActiveTab('shop');
+                      }}
+                    >
+                      View Deal 🛍️
+                    </button>
                   </div>
-                  <button className="carousel-item-btn">View Deal 🛍️</button>
-                </div>
-              ))}
+                ));
+              })()}
             </div>
           </div>
         )}
