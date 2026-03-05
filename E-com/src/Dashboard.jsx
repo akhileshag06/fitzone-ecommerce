@@ -316,6 +316,10 @@ function Dashboard() {
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     .tab-btn::before {
@@ -2371,6 +2375,7 @@ function Dashboard() {
       .dashboard-header { flex-direction: column; text-align: center; }
       .header-greeting { flex-direction: column; }
       .dashboard-tabs { flex-direction: column; }
+      .tab-btn { min-width: 100%; }
       .details-grid { grid-template-columns: 1fr; }
       .cart-item {
         grid-template-columns: 60px 1fr;
@@ -2394,6 +2399,140 @@ function Dashboard() {
       .order-header-large { flex-direction: column; align-items: flex-start; gap: 10px; }
       .order-footer-large { flex-direction: column; align-items: flex-start; }
       .order-actions { width: 100%; justify-content: space-between; }
+    }
+
+    /* Product Advertisement Carousel */
+    .product-ad-carousel {
+      margin: 30px 0;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(255, 183, 77, 0.1), rgba(255, 138, 92, 0.1));
+      border-radius: 30px;
+      padding: 30px 0;
+      border: 1px solid rgba(255, 183, 77, 0.2);
+      position: relative;
+    }
+
+    .carousel-title {
+      text-align: center;
+      color: white;
+      font-size: 24px;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .carousel-title span {
+      color: #ffb74d;
+      animation: glow 2s infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% { text-shadow: 0 0 10px rgba(255, 183, 77, 0.5); }
+      50% { text-shadow: 0 0 20px rgba(255, 183, 77, 0.8), 0 0 30px rgba(255, 183, 77, 0.6); }
+    }
+
+    .carousel-track {
+      display: flex;
+      animation: scroll 30s linear infinite;
+      gap: 20px;
+      padding: 0 20px;
+    }
+
+    .carousel-track:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .carousel-item {
+      min-width: 280px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 25px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .carousel-item:hover {
+      transform: translateY(-10px) scale(1.05);
+      border-color: #ffb74d;
+      box-shadow: 0 20px 40px rgba(255, 183, 77, 0.3);
+      background: rgba(255, 183, 77, 0.05);
+    }
+
+    .carousel-item-image {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      border-radius: 15px;
+      background: linear-gradient(145deg, #2d3342, #1f232e);
+      padding: 10px;
+    }
+
+    .carousel-item-badge {
+      background: linear-gradient(135deg, #ff6b6b, #ff5252);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      animation: pulse 2s infinite;
+    }
+
+    .carousel-item-name {
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      text-align: center;
+      min-height: 40px;
+    }
+
+    .carousel-item-price {
+      color: #ffb74d;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .carousel-item-original {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 14px;
+      text-decoration: line-through;
+      margin-left: 10px;
+    }
+
+    .carousel-item-btn {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 25px;
+      background: linear-gradient(135deg, #ffb74d, #ff8a5c);
+      color: #0a0c10;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .carousel-item-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(255, 183, 77, 0.4);
+    }
+
+    @media (max-width: 768px) {
+      .carousel-item {
+        min-width: 220px;
+      }
+      .carousel-track {
+        animation: scroll 20s linear infinite;
+      }
     }
   `;
 
@@ -2996,6 +3135,46 @@ function Dashboard() {
             </button>
           ))}
         </div>
+
+        {/* Product Advertisement Carousel */}
+        {activeTab === 'dashboard' && products.length > 0 && (
+          <div className="product-ad-carousel">
+            <h3 className="carousel-title">🔥 <span>HOT DEALS</span> - Limited Time Offers! 🔥</h3>
+            <div className="carousel-track">
+              {/* Duplicate products for seamless loop */}
+              {[...products, ...products].slice(0, 16).map((product, index) => (
+                <div 
+                  key={`carousel-${product._id}-${index}`}
+                  className="carousel-item"
+                  onClick={() => {
+                    setSelectedProduct(product);
+                    setProductDetails(true);
+                    setActiveTab('shop');
+                  }}
+                >
+                  {product.discount > 0 && (
+                    <div className="carousel-item-badge">
+                      {product.discount}% OFF
+                    </div>
+                  )}
+                  <img 
+                    src={product.image || 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=120&h=120&fit=crop'} 
+                    alt={product.name}
+                    className="carousel-item-image"
+                  />
+                  <div className="carousel-item-name">{product.name}</div>
+                  <div>
+                    <span className="carousel-item-price">{formatINR(product.price)}</span>
+                    {product.originalPrice && product.originalPrice > product.price && (
+                      <span className="carousel-item-original">{formatINR(product.originalPrice)}</span>
+                    )}
+                  </div>
+                  <button className="carousel-item-btn">View Deal 🛍️</button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Tab Content */}
         <div className="tab-content">
