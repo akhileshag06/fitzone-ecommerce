@@ -3181,8 +3181,8 @@ function Dashboard() {
                       className="carousel-item-image"
                       onClick={() => {
                         setSelectedProduct(product);
-                        setProductDetails(true);
                         setActiveTab('shop');
+                        setTimeout(() => setProductDetails(true), 100);
                       }}
                       style={{ cursor: 'pointer' }}
                     />
@@ -3190,8 +3190,8 @@ function Dashboard() {
                       className="carousel-item-name"
                       onClick={() => {
                         setSelectedProduct(product);
-                        setProductDetails(true);
                         setActiveTab('shop');
+                        setTimeout(() => setProductDetails(true), 100);
                       }}
                       style={{ cursor: 'pointer' }}
                     >
@@ -3208,8 +3208,8 @@ function Dashboard() {
                       onClick={(e) => {
                         e.stopPropagation();
                         setSelectedProduct(product);
-                        setProductDetails(true);
                         setActiveTab('shop');
+                        setTimeout(() => setProductDetails(true), 100);
                       }}
                     >
                       View Deal 🛍️
