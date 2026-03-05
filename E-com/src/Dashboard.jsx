@@ -2432,7 +2432,7 @@ function Dashboard() {
 
     .carousel-track {
       display: flex;
-      animation: scroll 30s linear infinite;
+      animation: scroll 20s linear infinite;
       gap: 20px;
       padding: 0 20px;
     }
@@ -2531,7 +2531,7 @@ function Dashboard() {
         min-width: 220px;
       }
       .carousel-track {
-        animation: scroll 20s linear infinite;
+        animation: scroll 15s linear infinite;
       }
     }
   `;
